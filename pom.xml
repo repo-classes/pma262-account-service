@@ -13,7 +13,7 @@
 
 	<properties>
 		<java.version>25</java.version>
-        <spring-cloud.version>2025.1.2</spring-cloud.version>
+        <spring-cloud.version>2025.1.3</spring-cloud.version>
         <maven.compiler.proc>full</maven.compiler.proc>
 	</properties>
 
