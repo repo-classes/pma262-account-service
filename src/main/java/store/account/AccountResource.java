@@ -59,7 +59,7 @@ public class AccountResource implements AccountController {
     @Override
     public ResponseEntity<AccountOut> findById(String id) {
         final Account a = accountService.findById(id);
-        if (a == null) new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (a == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(AccountParser.to(a));
     }
     

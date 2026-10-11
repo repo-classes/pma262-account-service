@@ -28,7 +28,7 @@ public class AccountService {
         final String pass = account.password().trim();
         if (pass.length() < 6) {
             throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Password must be more than 6 caracters"
+                HttpStatus.BAD_REQUEST, "Password must have at least 6 characters"
             );
         }
 
@@ -54,17 +54,21 @@ public class AccountService {
             );
         }
 
-        final String hash = calcHash(password);
+        // same normalization as create(), which hashes the trimmed password
+        final String hash = calcHash(password.trim());
         return accountRepository.findByEmailAndHashPassword(email, hash)
-            .orElseThrow()
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.UNAUTHORIZED, "Invalid credentials"
+            ))
             .to();
             
     }
 
     public Account findById(String id) {
+        // null when the id does not exist: AccountResource answers 404
         return accountRepository.findById(id)
-            .orElse(null)
-            .to();
+            .map(AccountModel::to)
+            .orElse(null);
     }
 
     public void delete(String id) {
